@@ -232,7 +232,7 @@ GetProductData = function(id,data)
 end
 
 local Open_Banned = function(plr)
-	local DS = game:service'DataStoreService':GetOrderedDataStore(Actinium.DataSyncing.BDataName)
+	local DS = game:GetService('DataStoreService'):GetOrderedDataStore(Actinium.DataSyncing.BDataName)
 	local NumberIndex = 1
 	local Page = DS:GetSortedAsync(false,20)
 	
