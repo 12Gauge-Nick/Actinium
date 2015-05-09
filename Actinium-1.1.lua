@@ -723,7 +723,7 @@ local CheckForCommand = function(plr,msg)
 end
 
 Check_For_Creator = function(plr)
-	local DS = game:service'DataStoreService':GetDataStore(Actinium.DataSyncing.CDataName)
+	local DS = game:GetService('DataStoreService'):GetDataStore(Actinium.DataSyncing.CDataName)
 	for i,v in pairs(Actinium.Ranked) do
 		local Key = Actinium.DataSyncing.Key(v[1])
 		print(v[3])
@@ -740,7 +740,7 @@ Check_For_Creator = function(plr)
 end
 
 Check_For_Creator_Leave = function(plr)
-	local DS = game:service'DataStoreService':GetDataStore(Actinium.DataSyncing.CDataName)
+	local DS = game:GetService('DataStoreService'):GetDataStore(Actinium.DataSyncing.CDataName)
 	for i,v in pairs(Actinium.Ranked) do
 		if v[1]:lower() == plr.Name:lower() and v[3] >= 4 then
 			local Key = Actinium.DataSyncing.Key(v[1])
@@ -751,7 +751,7 @@ end
 
 game.Close:connect(function()
 	print'game closing'
-	local DS = game:service'DataStoreService':GetDataStore(Actinium.DataSyncing.CDataName)
+	local DS = game:GetService('DataStoreService'):GetDataStore(Actinium.DataSyncing.CDataName)
 	for i,v in pairs(Actinium.Ranked) do
 		if v[3] >= 4 then
 			local Key = Actinium.DataSyncing.Key(v[1])
