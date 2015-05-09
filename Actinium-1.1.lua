@@ -241,7 +241,7 @@ local Open_Banned = function(plr)
 		Output(plr,'PageNumber: '..NumberIndex,BrickColor.Random(),'asd')
 		Output(plr,'Next page',BrickColor.Random(),function()
 			NumberIndex = NumberIndex + 1
-			Page:AdvanceToNextPageAsync()
+			pcall(function() Page:AdvanceToNextPageAsync() end)
 			GetData()
 		end)
 		for i,v in pairs(Page:GetCurrentPage()) do
