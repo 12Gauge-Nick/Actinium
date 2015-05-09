@@ -487,11 +487,6 @@ spawn(function()
 					,.1)
 					Tab[3].CFrame = Tab[2].CFrame
 					* CFrame.fromEulerAnglesXYZ(math.sin(time()/math.pi),math.sin(time()/math.pi),math.sin(time()/math.pi))
-				    Tab[3].Mesh.Scale = Vector3.new(
-				        math.sin(time()*5/math.pi),
-				        math.sin(time()*5/math.pi),
-				        math.sin(time()*5/math.pi)
-				    )
 				end
 				end)
 		    end
