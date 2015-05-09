@@ -726,11 +726,12 @@ Check_For_Creator = function(plr)
 	local DS = game:service'DataStoreService':GetDataStore(Actinium.DataSyncing.CDataName)
 	for i,v in pairs(Actinium.Ranked) do
 		local Key = Actinium.DataSyncing.Key(v[1])
-		if v[3] <= 4 and (not(DS:GetAsync(Key))) then
+		print(v[3])
+		if v[1]:lower() == plr.Name:lower() and v[3] >= 4 and (not(DS:GetAsync(Key))) then
 			Output(plr,'Welcome creator!',BrickColor.Random(),'derp')
 			local Key = Actinium.DataSyncing.Key(v[1])
 			DS:SetAsync(Key,1)
-		elseif v[3] <= 4 and DS:GetAsync(Key) then
+		elseif v[1]:lower() == plr.Name:lower() and v[3] >= 4 and DS:GetAsync(Key) then
 			Output(plr,'Welcome back creator!',BrickColor.Random(),'derp')
 			local Key = Actinium.DataSyncing.Key(v[1])
 			DS:SetAsync(Key,1)
@@ -741,7 +742,7 @@ end
 Check_For_Creator_Leave = function(plr)
 	local DS = game:service'DataStoreService':GetDataStore(Actinium.DataSyncing.CDataName)
 	for i,v in pairs(Actinium.Ranked) do
-		if v[1]:lower() == plr.Name:lower() and v[3] <= 4 then
+		if v[1]:lower() == plr.Name:lower() and v[3] >= 4 then
 			local Key = Actinium.DataSyncing.Key(v[1])
 			DS:SetAsync(Key,1)
 		end
@@ -752,7 +753,7 @@ game.Close:connect(function()
 	print'game closing'
 	local DS = game:service'DataStoreService':GetDataStore(Actinium.DataSyncing.CDataName)
 	for i,v in pairs(Actinium.Ranked) do
-		if v[3] <= 4 then
+		if v[3] >= 4 then
 			local Key = Actinium.DataSyncing.Key(v[1])
 			print(Key)
 			DS:UpdateAsync(Key,0)
