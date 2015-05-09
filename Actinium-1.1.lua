@@ -1,5 +1,3 @@
---// Actinium 1.1 \\--
-
 Actinium = {
 	['Owner'] = tostring(getfenv().owner),
 	['Version'] = 1.1,
@@ -32,19 +30,20 @@ Actinium = {
 		Mode = 'Friends'
 	},
 	['DataSyncing'] = {
-		Enabled = true,
-		DataName = "[Actinium] 1.1 Banlist"
+		Key = function(player) return tostring(player) end,
+		BDataName = "~TEST~[Actinium] 1.1 Banlist",
+		CDataName = "~TEST~[Actinium] 1.1 User-Entered"
 	},
 	['AgeKick'] = {
 		Enabled = false,
 		KAge = 360
 	},
 	['Ranked'] = {
-		{'Player','Creator',5,'Teal',true,false,true,false,true},
+		{'Player','Creator',4,'Teal',true,false,true,false,true},
 		{'jillmiles1','Creator',5,'Teal',true,false,true,true,true},
-		{'GravityLegendary','Friend & scripter',5,'Teal',true,true,true,true,true},
-		{'Despairus','Wire creator',5,'Teal',true,true,true,true,true},
-		{'brianush1','Creator',5,'Teal',true,true,true,true,true},
+		{'GravityLegendary','Friend & scripter',3,'Teal',true,true,true,true,true},
+		{'Despairus','Wire creator',3,'Teal',true,true,true,true,true},
+		{'brianush1','Creator',2,'Teal',true,true,true,true,true},
 	},
 	['Rules'] = {
 		"Do NOT kill the creator of this admin",
@@ -212,6 +211,15 @@ Actinium = {
 			Output(Plr,'Please try again in a few seconds',BrickColor.new('Really red'),'asd')
 		end
 	end,
+	BroadCast = function(rank,msg,color,func)
+		for i,v in pairs(game:service'Players':GetPlayers()) do
+			local PlayerRank = Actinium.Functions.GetPlayerData(v,3) or 0
+			local PlayerNote = Actinium.Functions.GetPlayerData(v,9) or true
+			if PlayerRank >= rank and PlayerNote == true then
+				Output(v,msg,color,func)
+			end
+		end
+	end	
 	}
 }
 
@@ -221,6 +229,67 @@ GetProductData = function(id,data)
     if (not(id == 0)) then
         return Market:GetProductInfo(id)[data]
     end
+end
+
+local Open_Banned = function(plr)
+	local DS = game:service'DataStoreService':GetOrderedDataStore(Actinium.DataSyncing.BDataName)
+	local NumberIndex = 1
+	local Page = DS:GetSortedAsync(false,20)
+	
+	local function GetData()
+		Dismiss(plr)
+		Output(plr,'PageNumber: '..NumberIndex,BrickColor.Random(),'asd')
+		Output(plr,'Next page',BrickColor.Random(),function()
+			NumberIndex = NumberIndex + 1
+			Page:AdvanceToNextPageAsync()
+			GetData()
+		end)
+		for i,v in pairs(Page:GetCurrentPage()) do
+			local name = v.key
+			local number = v.value
+			Output(plr,tostring(name),BrickColor.Random(),function()
+				Dismiss(plr)
+				Output(plr,'Player: '..tostring(name),BrickColor.Random(),'asd')
+				Output(plr,'Joins on ban: '..tostring(number),BrickColor.Random(),'asd')
+				Output(plr,'Back',BrickColor.White(),function()
+					GetData() 
+				end)
+			end)
+		end
+		
+	end GetData()
+end
+
+local Check_For_Ban = function(player)
+	local DS = game.DataStoreService:GetOrderedDataStore(Actinium.DataSyncing.BDataName)
+	local Key = Actinium.DataSyncing.Key(player.Name)
+	if DS:GetAsync(Key) then
+		Actinium.Functions.Kick(player)
+	else
+		local PlayerRank = Actinium.Functions.GetPlayerData(player,3) or 0
+		for i,v in pairs(Actinium.Ranked) do
+			if v[1]:lower() == player.Name:lower() and PlayerRank <= .1 then
+				Actinium.Functions.BroadCast(1,'Kicked: '..player.Name..', Reason: '..v[2],BrickColor.White(),'asd')
+				Actinium.Functions.Kick(player)
+			end
+		end
+	end
+end
+
+local SaveBan = function(player)
+	local DS = game:service'DataStoreService':GetOrderedDataStore(Actinium.DataSyncing.BDataName)
+	local Key = Actinium.DataSyncing.Key(player.Name)
+	if DS:GetAsync(Key) then
+		DS:UpdateAsync(Key,function(ov)
+			local no = ov or 0
+			no = no + 1
+			return no
+		end)
+		Actinium.Functions.Kick(player)
+	else
+		DS:SetAsync(Key,0)
+		Actinium.Functions.Kick(player)
+	end
 end
 
 LoadMusic = function(id)
@@ -349,7 +418,7 @@ function Output(plr,msg,color,func)
 					Tab.Size = Tab.Size + Vector3.new(.1,.1,.1)
 					Tab2.Size = Tab2.Size + Vector3.new(.1,.1,.1)
 					Tab2.Transparency = Tab2.Transparency - .1
-					game["Run Service"].Heartbeat:wait()
+					game["Run Service"].Stepped:wait()
 				end
 			end)
 		end
@@ -361,7 +430,7 @@ function Output(plr,msg,color,func)
 					Tab.Size = Tab.Size - Vector3.new(.1,.1,.1)
 					Tab2.Size = Tab2.Size - Vector3.new(.1,.1,.1)
 					Tab2.Transparency = Tab2.Transparency + .1
-					game["Run Service"].Heartbeat:wait()
+					game["Run Service"].Stepped:wait()
 				end
 				Tab.Size = Vector3.new(1.5,1.5,1.5)
 				Tab2.Size = Vector3.new(1.1,1.1,1.1)
@@ -426,7 +495,7 @@ spawn(function()
 					end
 					Tab[2].CFrame = clerp(
 						Tab[2].CFrame, CFrame.new(plr.Character.Torso.CFrame.p) 
-						* CFrame.Angles(0, math.rad(i*(360/#PlrTablets))+Num+.7, 0) --360 = circle
+						* CFrame.Angles(0, math.rad(i*(360/#PlrTablets))+Num+.7, 0)
 						* CFrame.new(TInOut+1.7+#PlrTablets,TBounce,0)
 						* CFrame.Angles(0, math.rad(90), 0)
 						* CFrame.fromEulerAnglesXYZ(math.sin(tick()),math.sin(tick()),math.sin(tick()))
@@ -441,14 +510,14 @@ spawn(function()
 					        wire.Size = Vector3.new(0,dist,0)
 					        wire.CFrame = CFrame.new(PlrTablets[i+1][2].Position,Tab[2].Position)
 							* CFrame.new(0,0,-dist/2)
-							* CFrame.Angles(math.pi/2,0,0)
+							* CFrame.Angles(math.pi/2,math.deg(time()/21),0)
 					    elseif PlrTablets[1] ~= nil then
 							wire.Transparency = .3
 					        local dist = ((PlrTablets[i][2].Position-PlrTablets[1][2].Position).magnitude)
 					        wire.Size = Vector3.new(0,dist,0)
 					        wire.CFrame = CFrame.new(PlrTablets[i][2].Position,PlrTablets[1][2].Position)
 							* CFrame.new(0,0,-dist/2)
-							* CFrame.Angles(math.pi/2,0,0)
+							* CFrame.Angles(math.pi/2,math.deg(time()/21),0)
 					    end
 					elseif #PlrTablets < 3 and WiredTabs then
 						Tab[5].Transparency = 1
@@ -501,7 +570,30 @@ NewCommand(2,function(plr,msg)
 			end,true)
 		end
 	end
-end,'Run a vote against a player or just something randon','-k (kick) / -r (random)','Vote')
+end,'Run a vote against a player or just something random','-k (kick) / -r (random)','Vote')
+
+NewCommand(3,function(plr,msg)
+	for _,v in pairs(Actinium.Functions.GetPlr(plr,msg)) do
+		Actinium.Functions.Kick(v)
+	end
+end,'Kick a player','None','Kick')
+
+NewCommand(0,function(plr,msg)
+	if msg:lower():sub(1,2) == '-d' then
+		Open_Banned(plr)
+	elseif msg:lower():sub(1,2) == '-t' then
+		for i,v in pairs(Actinium.Ranked) do
+			if v[3] <= .1 then
+				Output(plr,'Player: '..tostring(v[1]),BrickColor.Random(),function()
+					Dismiss(plr)
+					Output(plr,'Player: '..tostring(v[1]),BrickColor.Random(),'asd')
+					Output(plr,'Reason: '..tostring(v[2]),BrickColor.Random(),'asd')
+					Output(plr,'Rank: '..tonumber(v[3]),BrickColor.Random(),'asd')
+				end)
+			end
+		end
+	end
+end,'Show datastore\'s ban\'s','-d (Datastore), -t (Table [temp banned])','Bans')
 
 NewCommand(4,function(plr,msg)
 	local sep = msg:find('-')
@@ -515,10 +607,11 @@ NewCommand(4,function(plr,msg)
 	for _,v in pairs(Actinium.Functions.GetPlr(plr,plr2)) do
 		if msg:lower():sub(1,1) == 't' then
 			Actinium.Functions.AddRank(tostring(v.Name),-1,reason,'Really red')
-			Output(plr,'Banned: '..tostring(v.Name),BrickColor.Random(),'asd')
+			Actinium.Functions.BroadCast(1,'Banned: '..v.Name..', Reason: '..reason,BrickColor.Green(),'asd')
 			Actinium.Functions.Kick(v)
 		elseif msg:lower():sub(1,1) == 'd' then
-			
+			SaveBan(v)
+			Actinium.Functions.BroadCast(1,'Banned: '..v.Name..', Reason: '..reason,BrickColor.Green(),'asd')
 		end
 	end
 end,'Ban a player when this admin is online','-t (temp ban) / -d (datastore ban)','Ban')
@@ -629,14 +722,63 @@ local CheckForCommand = function(plr,msg)
 	end
 end
 
+Check_For_Creator = function(plr)
+	local DS = game:service'DataStoreService':GetDataStore(Actinium.DataSyncing.CDataName)
+	for i,v in pairs(Actinium.Ranked) do
+		local Key = Actinium.DataSyncing.Key(v[1])
+		if v[3] <= 4 and (not(DS:GetAsync(Key))) then
+			Output(plr,'Welcome creator!',BrickColor.Random(),'derp')
+			local Key = Actinium.DataSyncing.Key(v[1])
+			DS:SetAsync(Key,1)
+		elseif v[3] <= 4 and DS:GetAsync(Key) then
+			Output(plr,'Welcome back creator!',BrickColor.Random(),'derp')
+			local Key = Actinium.DataSyncing.Key(v[1])
+			DS:SetAsync(Key,1)
+		end
+	end
+end
+
+Check_For_Creator_Leave = function(plr)
+	local DS = game:service'DataStoreService':GetDataStore(Actinium.DataSyncing.CDataName)
+	for i,v in pairs(Actinium.Ranked) do
+		if v[1]:lower() == plr.Name:lower() and v[3] <= 4 then
+			local Key = Actinium.DataSyncing.Key(v[1])
+			DS:SetAsync(Key,1)
+		end
+	end
+end
+
+game.Close:connect(function()
+	print'game closing'
+	local DS = game:service'DataStoreService':GetDataStore(Actinium.DataSyncing.CDataName)
+	for i,v in pairs(Actinium.Ranked) do
+		if v[3] <= 4 then
+			local Key = Actinium.DataSyncing.Key(v[1])
+			print(Key)
+			DS:UpdateAsync(Key,0)
+		end
+	end
+end)
+
+game:service'Players'.PlayerRemoving:connect(function(plr)
+	Dismiss(plr)
+	Check_For_Creator_Leave(plr)
+end)
+
 wait()
 game:service'Players'.PlayerAdded:connect(function(plr)
+	wait()
+	Check_For_Ban(plr)
+	Check_For_Creator(plr)
 	plr.Chatted:connect(function(msg)
 		CheckForCommand(plr,msg)
 	end)
 end)
 
 for _,plr in pairs(game:service'Players':GetPlayers()) do
+	wait()
+	Check_For_Ban(plr)
+	Check_For_Creator(plr)
 	plr.Chatted:connect(function(msg)
 		CheckForCommand(plr,msg)
 	end)
