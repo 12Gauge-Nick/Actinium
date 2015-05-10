@@ -2,7 +2,7 @@
 
 local Shutdown = false
 local KickNils = false
-local ShowMessage = false
+local ShowMessage = true
 local Kick = false
 
 local Player = "zachmm03"
