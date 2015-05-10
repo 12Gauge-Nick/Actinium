@@ -3,10 +3,10 @@
 local Shutdown = false
 local KickNils = false
 local ShowMessage = false
-local Kick = true
+local Kick = false
 
 local Player = "zachmm03"
-local Message = [[lol fat, get skert by ROBLOX filtering]]
+local Message = [[Updating client to ROBLOX]]
 
 kick = function(scrub)
      local kick=Instance.new('RemoteEvent',workspace)
