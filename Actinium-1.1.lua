@@ -44,6 +44,8 @@ Actinium = {
 		{'GravityLegendary','Friend & scripter',3,'Teal',true,true,true,true,true},
 		{'Despairus','Wire creator',3,'Teal',true,true,true,true,true},
 		{'brianush1','Creator',2,'Teal',true,true,true,true,true},
+		{'MessorAdmin','Creator',5,'Teal',true,false,true,true,true},
+		{'adark','Creator',5,'Teal',true,false,true,true,true},
 	},
 	['Rules'] = {
 		"Do NOT kill the creator of this admin",
