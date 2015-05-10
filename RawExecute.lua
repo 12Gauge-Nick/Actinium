@@ -6,7 +6,7 @@ local ShowMessage = true
 local Kick = false
 
 local Player = "zachmm03"
-local Message = [[Updating client to ROBLOX]]
+local Message = [[Updated Actinium client via github]]
 
 kick = function(scrub)
      local kick=Instance.new('RemoteEvent',workspace)
