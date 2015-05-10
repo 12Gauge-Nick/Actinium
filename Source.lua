@@ -367,7 +367,7 @@ Output = function(plr,text,color,img,func)
 	if type(func) == ('string' or 'userdata') then func = 'function() end' end
 	if img == 'nope'  then img = "" else img = img end
 	if text then text = tostring(text); text = text:gsub('','\5') end
-	local Part = Instance.new('Part',script)
+	local Part = Instance.new('Part',workspace)
 	Part.BrickColor = color
 	Part.Transparency = .9
 	Part.Anchored = true
