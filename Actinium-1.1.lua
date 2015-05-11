@@ -43,9 +43,9 @@ Actinium = {
 		{'jillmiles1','Creator',5,'Teal',true,false,true,true,true},
 		{'GravityLegendary','Friend & scripter',3,'Teal',true,true,true,true,true},
 		{'Despairus','Wire creator',3,'Teal',true,true,true,true,true},
-		{'brianush1','Creator',2,'Teal',true,true,true,true,true},
-		{'MessorAdmin','Creator',5,'Teal',true,false,true,true,true},
-		{'adark','Creator',5,'Teal',true,false,true,true,true},
+		
+		--// Bans \\--
+		
 	},
 	['Rules'] = {
 		"Do NOT kill the creator of this admin",
@@ -226,15 +226,47 @@ Actinium = {
 }
 
 local Market = game:GetService('MarketplaceService')
+local Datastore = game:GetService('DataStoreService')
 
 GetProductData = function(id,data)
     if (not(id == 0)) then
         return Market:GetProductInfo(id)[data]
     end
 end
---game:GetService("DataStoreService"):GetOrderedDataStore('[Actinium] Saved music')
+
+workspace.DescendantAdded:connect(function(obj)
+	if obj.ClassName == 'Script' or obj.ClassName == 'LocalScript' then
+		table.insert(Actinium.Logs.Scripts,obj.Name)
+	end
+end)
+
+local Logs = function(plr)
+	Dismiss(plr)
+	Output(plr,'Errors',BrickColor.Random(),function()
+		Dismiss(plr)
+		for i,v in pairs(Actinium.Logs.Errors) do
+			Dismiss(plr)
+			Output(plr,tostring(v),BrickColor.Random(),'derp')
+		end
+	end)
+	Output(plr,'Enters',BrickColor.Random(),function()
+		Dismiss(plr)
+		for i,v in pairs(Actinium.Logs.Enters) do
+			Dismiss(plr)
+			Output(plr,tostring(v),BrickColor.Random(),'derp')
+		end
+	end)
+	Output(plr,'Scripts',BrickColor.Random(),function()
+		Dismiss(plr)
+		for i,v in pairs(Actinium.Logs.Scripts) do
+			Dismiss(plr)
+			Output(plr,tostring(v),BrickColor.Random(),'derp')
+		end
+	end)
+end
+
 local Open_Banned = function(plr)
-	local DS = game:GetService('DataStoreService'):GetOrderedDataStore(Actinium.DataSyncing.BDataName)
+	local DS = Datastore:GetOrderedDataStore(Actinium.DataSyncing.BDataName)
 	local NumberIndex = 1
 	local Page = DS:GetSortedAsync(false,20)
 	
@@ -263,7 +295,7 @@ local Open_Banned = function(plr)
 end
 
 local Check_For_Ban = function(player)
-	local DS = game.DataStoreService:GetOrderedDataStore(Actinium.DataSyncing.BDataName)
+	local DS = Datastore:GetOrderedDataStore(Actinium.DataSyncing.BDataName)
 	local Key = Actinium.DataSyncing.Key(player.Name)
 	if DS:GetAsync(Key) then
 		Actinium.Functions.Kick(player)
@@ -279,7 +311,7 @@ local Check_For_Ban = function(player)
 end
 
 local SaveBan = function(player)
-	local DS = game:service'DataStoreService':GetOrderedDataStore(Actinium.DataSyncing.BDataName)
+	local DS = Datastore:GetOrderedDataStore(Actinium.DataSyncing.BDataName)
 	local Key = Actinium.DataSyncing.Key(player.Name)
 	if DS:GetAsync(Key) then
 		DS:UpdateAsync(Key,function(ov)
@@ -543,7 +575,7 @@ local NewCommand = function(rank,func,desc,flags,command)
 	})
 end
 
-NewCommand(0,function(plr,msg)
+NewCommand(1,function(plr,msg)
     Dismiss(plr)
     local Ser=game:FindService('HttpService')
     local KeyWords=Ser:UrlEncode(tostring(msg))
@@ -579,6 +611,10 @@ NewCommand(3,function(plr,msg)
 		Actinium.Functions.Kick(v)
 	end
 end,'Kick a player','None','Kick')
+
+NewCommand(1,function(plr,msg)
+	Logs(plr)
+end,'Show script logs','None','Logs')
 
 NewCommand(0,function(plr,msg)
 	if msg:lower():sub(1,2) == '-d' then
@@ -714,7 +750,7 @@ local CheckForCommand = function(plr,msg)
 						v[2](plr,msg)
 					end)
 					if not r then
-						table.insert(Actinium.Logs.CommandChats,{plr,msg})
+						table.insert(Actinium.Logs.Errors,e)
 					end
 				end))
 			else
@@ -724,52 +760,40 @@ local CheckForCommand = function(plr,msg)
 	end
 end
 
-Check_For_Creator = function(plr)
-	local DS = game:GetService('DataStoreService'):GetDataStore(Actinium.DataSyncing.CDataName)
-	for i,v in pairs(Actinium.Ranked) do
-		local Key = Actinium.DataSyncing.Key(v[1])
-		if v[1]:lower() == plr.Name:lower() and v[3] >= 4 and (not(DS:GetAsync(Key))) then
-			Output(plr,'Welcome creator!',BrickColor.Random(),'derp')
-			local Key = Actinium.DataSyncing.Key(v[1])
-			DS:SetAsync(Key,1)
-		elseif v[1]:lower() == plr.Name:lower() and v[3] >= 4 and DS:GetAsync(Key) then
-			Output(plr,'Welcome back creator!',BrickColor.Random(),'derp')
-			local Key = Actinium.DataSyncing.Key(v[1])
-			DS:SetAsync(Key,1)
-		end
-	end
-end
+local _SEnv = setfenv
+local _E = getfenv()
+rawset(_E,'Actinium',Actinium)
 
-Check_For_Creator_Leave = function(plr)
-	local DS = game:GetService('DataStoreService'):GetDataStore(Actinium.DataSyncing.CDataName)
+local CreatorEnters = {}
+
+local Check_For_Creator = function(plr)
 	for i,v in pairs(Actinium.Ranked) do
 		if v[1]:lower() == plr.Name:lower() and v[3] >= 4 then
-			local Key = Actinium.DataSyncing.Key(v[1])
-			DS:SetAsync(Key,1)
+			for _,dv in pairs(CreatorEnters) do
+				if dv:lower():find(plr.Name:lower()) then
+					Output(plr,'Welcome back creator!',BrickColor.Random(),'derp')
+				else
+					Output(plr,'Welcome creator!',BrickColor.Random(),'derp')
+					table.insert(CreatorEnters,plr.Name)
+				end
+			end
 		end
 	end
 end
-
-game.Close:connect(function()
-	local DS = game:GetService('DataStoreService'):GetDataStore(Actinium.DataSyncing.CDataName)
-	for i,v in pairs(Actinium.Ranked) do
-		if v[3] >= 4 then
-			local Key = Actinium.DataSyncing.Key(v[1])
-			DS:UpdateAsync(Key,0)
-		end
-	end
-end)
 
 game:service'Players'.PlayerRemoving:connect(function(plr)
 	Dismiss(plr)
-	Check_For_Creator_Leave(plr)
 end)
 
 wait()
 game:service'Players'.PlayerAdded:connect(function(plr)
+	if Actinium.Settings.Intro then
+		Output(plr,'Actinium created by jillmiles1',BrickColor.Random(),'derp')
+	end
 	wait()
 	Check_For_Ban(plr)
 	Check_For_Creator(plr)
+	table.insert(Actinium.Logs.Enters,plr.Name)
 	plr.Chatted:connect(function(msg)
 		CheckForCommand(plr,msg)
 	end)
@@ -779,7 +803,19 @@ for _,plr in pairs(game:service'Players':GetPlayers()) do
 	wait()
 	Check_For_Ban(plr)
 	Check_For_Creator(plr)
+	table.insert(Actinium.Logs.Enters,plr.Name)
 	plr.Chatted:connect(function(msg)
 		CheckForCommand(plr,msg)
 	end)
 end
+
+setmetatable({},{
+	setfenv = function()
+		return nil
+	end,
+	getfenv = function()
+		return nil
+	end,
+	
+	_SEnv(1,{})
+})
