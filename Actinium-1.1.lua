@@ -375,7 +375,7 @@ end
 --// Output \\--
 function Output(plr,msg,color,func)
 	if type(plr) ~= 'userdata' then return end
-	if plr.Character.Torso.Parent == nil then return end
+	if not plr.Character then return end
 	local wire = Instance.new("Part")
 	local Tab = Instance.new('Part',script)
 	Tab.BrickColor = color
