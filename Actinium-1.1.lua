@@ -339,6 +339,14 @@ LoadMusic = function(id)
            v:remove()
         end
     end
+    for i,v in pairs(script:GetChildren()) do
+       if v.ClassName == 'Sound' or v:IsA('Sound') then
+           v.Looped = false
+           v.PlayOnRemove = false
+           v:Pause()
+           v:remove()
+        end
+    end
     local s = Instance.new('Sound',script)
     s.SoundId = 'rbxassetid://'..id
 	s.Volume=1
