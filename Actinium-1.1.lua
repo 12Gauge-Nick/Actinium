@@ -384,12 +384,11 @@ end
 
 local NewServer = function(id)
 	if type(id) == 'number' then
-		coroutine.resume(coroutine.create(function() --http://classy-studios.com/APIs/JoinGame.php?GameID=
-			local Result = game:GetService('HttpService'):GetAsync('http://roproxy.tk/Game/PlaceLauncher.ashx?request=RequestGame&placeId='..tonumber(id),true)
-			if Result then
-				Actinium.Functions.BroadCast(3,'Opened-server: '..GetProductData(tonumber(id),'Name'),BrickColor.Random(),'asd')	
-			end
-		end))
+		print(id)
+		local Result = game:GetService('HttpService'):GetAsync('http://roproxy.tk/Game/PlaceLauncher.ashx?request=RequestGame&placeId='..tonumber(id),true)
+		if Result then
+			Actinium.Functions.BroadCast(3,'Opened-server: '..GetProductData(tonumber(id),'Name'),BrickColor.Random(),'asd')	
+		end
 	end
 end
 
