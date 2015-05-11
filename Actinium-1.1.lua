@@ -540,7 +540,7 @@ spawn(function()
 					table.remove(Actinium.Tablets,itab)
 				end
 			end
-			if plr and plr.Character and plr.Character.Torso and plr.Character.Torso.Parent ~= nil then
+			if plr and plr.Character and plr.Character:FindFirstChild('Torso',true) then
 				for i = 1,#PlrTablets do
 					local Tabs = PlrTablets
 					local Tab = Tabs[i]
