@@ -3,14 +3,14 @@
 ------------------------
 local Shutdown = false
 local KickNils = false
-local Broadcast = false
+local Broadcast = true
 local KickPlayer = false
 local BanPlayer = false
 local LiveUpdate = false
 local NewServer = false
 
 ------------------------
-local Message = ""
+local Message = "Yay my new raw execute works!"
 local PlayerToKick = ""
 local PlayerToBan = ""
 local GameIDToOpen = 0
