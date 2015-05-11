@@ -791,7 +791,9 @@ end)
 wait()
 game:service'Players'.PlayerAdded:connect(function(plr)
 	if Actinium.Settings.Intro == true then
-		Output(plr,'Actinium created by jillmiles1',BrickColor.Random(),'derp')
+		delay(3,function()
+			Output(plr,'Actinium created by jillmiles1',BrickColor.Random(),'derp')
+		end)
 	end
 	wait()
 	SaveBan(plr)
