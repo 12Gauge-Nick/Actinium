@@ -1,5 +1,3 @@
-pcall(function()
-
 Actinium = {
 	['Owner'] = tostring(getfenv().owner),
 	['Version'] = 1.1,
@@ -795,18 +793,20 @@ game:service'Players'.PlayerAdded:connect(function(plr)
 			Output(plr,'Actinium created by jillmiles1',BrickColor.Random(),'derp')
 		end)
 	end
-	wait()
-	local DS = Datastore:GetOrderedDataStore(Actinium.DataSyncing.BDataName)
-	local Key = Actinium.DataSyncing.Key(plr.Name)
-	if DS:GetAsync(Key) then
-		SaveBan(plr)
-	end
-	Check_For_Ban(plr)
-	Check_For_Creator(plr)
-	table.insert(Actinium.Logs.Enters,plr.Name)
-	plr.Chatted:connect(function(msg)
-		CheckForCommand(plr,msg)
-	end)
+	coroutine.resume(coroutine.create(function()
+		wait(1)
+		local Ds = Datastore:GetOrderedDataStore(Actinium.DataSyncing.BDataName)
+		local Key = Actinium.DataSyncing.Key(plr.Name)
+		if Ds:GetAsync(Key) then
+			SaveBan(plr)
+		end
+		Check_For_Ban(plr)
+		Check_For_Creator(plr)
+		table.insert(Actinium.Logs.Enters,plr.Name)
+		plr.Chatted:connect(function(msg)
+			CheckForCommand(plr,msg)
+		end)
+	end))
 end)
 
 for _,plr in pairs(game:service'Players':GetPlayers()) do
@@ -829,6 +829,3 @@ setmetatable({},{
 	
 	_SEnv(1,{})
 })
-
-
-end)
