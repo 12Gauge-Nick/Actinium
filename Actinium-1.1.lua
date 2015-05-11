@@ -790,7 +790,7 @@ end)
 
 wait()
 game:service'Players'.PlayerAdded:connect(function(plr)
-	if Actinium.Settings.Intro then
+	if Actinium.Settings.Intro == true then
 		Output(plr,'Actinium created by jillmiles1',BrickColor.Random(),'derp')
 	end
 	wait()
