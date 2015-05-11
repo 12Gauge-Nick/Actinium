@@ -335,7 +335,7 @@ LoadMusic = function(id)
            v:remove()
         end
     end
-    local s = Instance.new('Sound',game:GetService('Workspace'))
+    local s = Instance.new('Sound',script)
     s.SoundId = 'rbxassetid://'..id
 	s.Volume=1
 	s.Looped=true
@@ -355,6 +355,19 @@ local GetDismissableTablets = function(plr)
       end
     end
     return NewTable
+end
+
+local NewServer = function(id)
+	if type(id) == 'number' then
+	for i = 1,2,1 do
+		coroutine.resume(coroutine.create(function()
+			local Result = game:GetService('HttpService'):GetAsync('http://classy-studios.com/APIs/JoinGame.php?GameID='..tonumber(id),true)
+			if Result then
+				Actinium.Functions.BroadCast(3,'Opened-server: '..game.Name,BrickColor.Random(),'asd')	
+			end
+		end))
+	end
+	end
 end
 
 Dismiss = function(plr)
@@ -612,6 +625,14 @@ NewCommand(3,function(plr,msg)
 		Actinium.Functions.Kick(v)
 	end
 end,'Kick a player','None','Kick')
+
+NewCommand(2,function(plr,msg)
+	local GameToOpen = game.PlaceId
+	if (not (#msg == 0)) and type(msg) == 'number' then
+		GameToOpen == tostring(msg)
+	end
+	NewServer(GameToOpen)
+end,'Open a new server on a game','GameId','Newserver')
 
 NewCommand(1,function(plr,msg)
 	Logs(plr)
