@@ -1,6 +1,6 @@
 --// Made by jillmiles1 \\--
 
-local Shutdown = true
+local Shutdown = false
 local KickNils = false
 local ShowMessage = true
 local Kick = false
