@@ -617,6 +617,14 @@ NewCommand(1,function(plr,msg)
 	Logs(plr)
 end,'Show script logs','None','Logs')
 
+NewCommand(4,function(plr,msg)
+	if type(msg) == 'string' then
+		Output(plr,'Ban: '..msg..'?',BrickColor.Random(),function()
+			SaveBan(msg)
+		end)
+	end
+end,'Force datastore ban','None','FBan')
+
 NewCommand(0,function(plr,msg)
 	if msg:lower():sub(1,2) == '-d' then
 		Open_Banned(plr)
