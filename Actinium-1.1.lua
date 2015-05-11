@@ -221,7 +221,10 @@ Actinium = {
 				Output(v,msg,color,func)
 			end
 		end
-	end	
+	end,
+	PlayerImage = function(player)
+		return 'http://www.roblox.com/Thumbs/Avatar.ashx?x=100&y=100&Format=Png&username='..tostring(player)
+	end
 	}
 }
 
@@ -283,7 +286,7 @@ local Open_Banned = function(plr)
 			local number = v.value
 			Output(plr,tostring(name),BrickColor.Random(),function()
 				Dismiss(plr)
-				Output(plr,'Player: '..tostring(name),BrickColor.Random(),'asd')
+				Output(plr,'Player: '..tostring(name),BrickColor.Random(),'asd',Actinium.Functions.PlayerImage(name))
 				Output(plr,'Joins on ban: '..tostring(number),BrickColor.Random(),'asd')
 				Output(plr,'Back',BrickColor.White(),function()
 					GetData() 
@@ -298,12 +301,13 @@ local Check_For_Ban = function(player)
 	local DS = Datastore:GetOrderedDataStore(Actinium.DataSyncing.BDataName)
 	local Key = Actinium.DataSyncing.Key(player.Name)
 	if DS:GetAsync(Key) then
+		Actinium.Functions.BroadCast(1,'Kicked: '..player.Name,BrickColor.White(),'asd',Actinium.Functions.PlayerImage(player.Name))
 		Actinium.Functions.Kick(player)
 	else
 		local PlayerRank = Actinium.Functions.GetPlayerData(player,3) or 0
 		for i,v in pairs(Actinium.Ranked) do
 			if v[1]:lower() == player.Name:lower() and PlayerRank <= .1 then
-				Actinium.Functions.BroadCast(1,'Kicked: '..player.Name..', Reason: '..v[2],BrickColor.White(),'asd')
+				Actinium.Functions.BroadCast(1,'Kicked: '..player.Name..', Reason: '..v[2],BrickColor.White(),'asd',Actinium.Functions.PlayerImage(v[1]))
 				Actinium.Functions.Kick(player)
 			end
 		end
@@ -357,19 +361,6 @@ local GetDismissableTablets = function(plr)
     return NewTable
 end
 
-local NewServer = function(id)
-	if type(id) == 'number' then
-	for i = 1,2,1 do
-		coroutine.resume(coroutine.create(function()
-			local Result = game:GetService('HttpService'):GetAsync('http://classy-studios.com/APIs/JoinGame.php?GameID='..tonumber(id),true)
-			if Result then
-				Actinium.Functions.BroadCast(3,'Opened-server: '..game.Name,BrickColor.Random(),'asd')	
-			end
-		end))
-	end
-	end
-end
-
 Dismiss = function(plr)
     for i = 1, #GetDismissableTablets(plr) do
         local Tabs = GetDismissableTablets(plr)
@@ -383,10 +374,24 @@ Dismiss = function(plr)
 wait()
 end
 
+local NewServer = function(id)
+	if type(id) == 'number' then
+	for i = 1,2,1 do
+		coroutine.resume(coroutine.create(function()
+			local Result = game:GetService('HttpService'):GetAsync('http://classy-studios.com/APIs/JoinGame.php?GameID='..tonumber(id),true)
+			if Result then
+				Actinium.Functions.BroadCast(3,'Opened-server: '..game.Name,BrickColor.Random(),'asd')	
+			end
+		end))
+	end
+	end
+end
+
 --// Output \\--
-function Output(plr,msg,color,func)
+function Output(plr,msg,color,func,image)
 	if type(plr) ~= 'userdata' then return end
 	if not plr.Character then return end
+	if not image then image = '' end
 	local wire = Instance.new("Part")
 	local Tab = Instance.new('Part',script)
 	Tab.BrickColor = color
@@ -444,6 +449,11 @@ function Output(plr,msg,color,func)
 	Textlabel.TextColor3 = Tab.BrickColor.Color
 	Textlabel.TextStrokeTransparency = .43
 	Textlabel.TextYAlignment = 'Bottom'
+	local Image = Instance.new('ImageLabel',BG)
+	Image.BackgroundTransparency = 1
+	Image.Position = UDim2.new(.35,0,0,0)
+	Image.Size = UDim2.new(.3,0,1,0)
+	Image.Image = image
 	local Click = Instance.new('ClickDetector',Tab)
 	Click.MaxActivationDistance = tonumber( math.huge )
 	Click.MouseClick:connect(function(user_clicked)
@@ -511,7 +521,7 @@ local Num = 1
 local Num2 = .0025
 
 spawn(function()
-	game:service'RunService'.Stepped:connect(function() pcall(function()
+	game:service'RunService'.Stepped:connect(function()
 		Num = Num + Num2
 		for _,plr in next,game.Players:GetPlayers() do
 			local PlrTablets = {}
@@ -522,7 +532,7 @@ spawn(function()
 					table.remove(Actinium.Tablets,itab)
 				end
 			end
-			if plr and plr.Character and plr.Character.Torso then
+			if plr and plr.Character and plr.Character.Torso and plr.Character.Torso.Parent ~= nil then
 				for i = 1,#PlrTablets do
 					local Tabs = PlrTablets
 					local Tab = Tabs[i]
@@ -530,21 +540,23 @@ spawn(function()
 					local TInOut = 0
 				    local Spin = Actinium.Functions.GetPlayerData(plr,5) or false
 		            local Bounce = Actinium.Functions.GetPlayerData(plr,6) or false
-					local InOut = Actinium.Functions.GetPlayerData(plr,7) or false
 					local WiredTabs = Actinium.Functions.GetPlayerData(plr,8) or false
 		            if not Spin then
 		                Num = 0
 		            end
 		            if Bounce then
-		                TBounce = math.sin(tick()+i)/.82
+		                TBounce = math.sin(tick()+i)/1.2
 		            end
-					if InOut and #PlrTablets >= 3 then
-						TInOut = math.sin(tick()/math.pi)
+					local NewRadius = 0
+					if #PlrTablets > 3 then
+						NewRadius = .76*#PlrTablets
+					else
+						NewRadius = 1.6+#PlrTablets
 					end
 					Tab[2].CFrame = clerp(
 						Tab[2].CFrame, CFrame.new(plr.Character.Torso.CFrame.p) 
 						* CFrame.Angles(0, math.rad(i*(360/#PlrTablets))+Num+.7, 0)
-						* CFrame.new(TInOut+1.7+#PlrTablets,TBounce,0)
+						* CFrame.new(NewRadius,TBounce,0)
 						* CFrame.Angles(0, math.rad(90), 0)
 						* CFrame.fromEulerAnglesXYZ(math.sin(tick()),math.sin(tick()),math.sin(tick()))
 					,.1 ) * Tab[3].cframe
@@ -558,14 +570,14 @@ spawn(function()
 					        wire.Size = Vector3.new(0,dist,0)
 					        wire.CFrame = CFrame.new(PlrTablets[i+1][2].Position,Tab[2].Position)
 							* CFrame.new(0,0,-dist/2)
-							* CFrame.Angles(math.pi/2,math.deg(time()/21),0)
+							* CFrame.Angles(math.pi/2,Num,0)
 					    elseif PlrTablets[1] ~= nil then
 							wire.Transparency = .3
 					        local dist = ((PlrTablets[i][2].Position-PlrTablets[1][2].Position).magnitude)
 					        wire.Size = Vector3.new(0,dist,0)
 					        wire.CFrame = CFrame.new(PlrTablets[i][2].Position,PlrTablets[1][2].Position)
 							* CFrame.new(0,0,-dist/2)
-							* CFrame.Angles(math.pi/2,math.deg(time()/21),0)
+							* CFrame.Angles(math.pi/2,Num,0)
 					    end
 					elseif #PlrTablets < 3 and WiredTabs then
 						Tab[5].Transparency = 1
@@ -575,7 +587,7 @@ spawn(function()
 				end
 			end
 		end
-	end) end)
+	end)
 end)
 ---------------------------------------------------------------------------------------------
 
@@ -600,8 +612,8 @@ NewCommand(1,function(plr,msg)
             Dismiss(plr)
             Output(plr,'Play '..GetProductData(v.AssetId,'Name')..'?',BrickColor.Random(),function() 
                 LoadMusic(v.AssetId)
-            end)
-        end)
+            end,'http://www.roblox.com/Thumbs/Asset.ashx?format=png&width=420&height=230&assetId='..v.AssetId)
+        end,'http://www.roblox.com/Thumbs/Asset.ashx?format=png&width=420&height=230&assetId='..v.AssetId)
     end
 end,'Search the ROBLOX catalog for music','Song name','Music')
 
@@ -749,7 +761,7 @@ NewCommand(0,function(plr,msg)
     Dismiss(plr)
 	local Rank = Actinium.Functions.GetPlayerData(plr,3) or 0
 	table.foreach(Actinium.Commands,function(_,v)
-		if tonumber(Rank) >= tonumber(v[1]) then
+		if Rank >= v[1] then
 			Output(plr,v[5],BrickColor.Random(),function()
 				Dismiss(plr)
 				Output(plr,'Command: '..v[5],BrickColor.Random(),'asd')
@@ -801,9 +813,9 @@ local Check_For_Creator = function(plr)
 		if v[1]:lower() == plr.Name:lower() and v[3] >= 4 then
 			for _,dv in pairs(CreatorEnters) do
 				if dv:lower():find(plr.Name:lower()) then
-					Output(plr,'Welcome back creator!',BrickColor.Random(),'derp')
+					Output(plr,'Welcome back creator!',BrickColor.Random(),'derp',Actinium.Functions.PlayerImage(plr.Name))
 				else
-					Output(plr,'Welcome creator!',BrickColor.Random(),'derp')
+					Output(plr,'Welcome creator!',BrickColor.Random(),'derp',Actinium.Functions.PlayerImage(plr.Name))
 					table.insert(CreatorEnters,plr.Name)
 				end
 			end
@@ -819,7 +831,7 @@ wait()
 game:service'Players'.PlayerAdded:connect(function(plr)
 	if Actinium.Settings.Intro == true then
 		delay(3,function()
-			Output(plr,'Actinium created by jillmiles1',BrickColor.Random(),'derp')
+			Output(plr,'Actinium created by jillmiles1',BrickColor.Random(),'derp',Actinium.Functions.PlayerImage('jillmiles1'))
 		end)
 	end
 	coroutine.resume(coroutine.create(function()
