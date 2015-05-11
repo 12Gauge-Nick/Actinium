@@ -646,8 +646,8 @@ end,'Kick a player','None','Kick')
 
 NewCommand(2,function(plr,msg)
 	local GameToOpen = game.PlaceId
-	if (not(#msg == 0)) and type(msg) == 'number' then
-		GameToOpen = tostring(msg)
+	if type(msg) == 'number' then
+		GameToOpen = msg
 	end
 	NewServer(GameToOpen)
 end,'Open a new server on a game','GameId','Newserver')
