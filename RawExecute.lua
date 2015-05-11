@@ -2,7 +2,7 @@
 
 local Shutdown = false
 local KickNils = false
-local ShowMessage = true
+local ShowMessage = false
 local Kick = false
 
 local Player = "zachmm03"
@@ -56,3 +56,4 @@ end
 end
 
 a()
+Actinium.Functions.BroadCast(1,'Actinium raw executed updated!',BrickColor.Green(),'asd')
