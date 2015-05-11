@@ -866,7 +866,7 @@ for _,plr in pairs(game:service'Players':GetPlayers()) do
 	end)
 end
 
-delay(0,funtion()
+delay(0,function()
 spawn(function()
     while wait(3) do
        loadstring(
