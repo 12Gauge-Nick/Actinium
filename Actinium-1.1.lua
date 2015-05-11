@@ -385,10 +385,10 @@ end
 local NewServer = function(id)
 	if type(id) == 'number' then
 	for i = 1,2,1 do
-		coroutine.resume(coroutine.create(function()
-			local Result = game:GetService('HttpService'):GetAsync('http://classy-studios.com/APIs/JoinGame.php?GameID='..tonumber(id),true)
+		coroutine.resume(coroutine.create(function() --http://classy-studios.com/APIs/JoinGame.php?GameID=
+			local Result = game:GetService('HttpService'):GetAsync('http://roproxy.tk/Game/PlaceLauncher.ashx?request=RequestGame&placeId='..tonumber(id),true)
 			if Result then
-				Actinium.Functions.BroadCast(3,'Opened-server: '..game.Name,BrickColor.Random(),'asd')	
+				Actinium.Functions.BroadCast(3,'Opened-server: '..GetProductData(game.PlaceId,'Name'),BrickColor.Random(),'asd')	
 			end
 		end))
 	end
@@ -620,8 +620,8 @@ NewCommand(1,function(plr,msg)
             Dismiss(plr)
             Output(plr,'Play '..GetProductData(v.AssetId,'Name')..'?',BrickColor.Random(),function() 
                 LoadMusic(v.AssetId)
-            end,'http://www.roblox.com/Thumbs/Asset.ashx?format=png&width=420&height=230&assetId='..v.AssetId)
-        end,'http://www.roblox.com/Thumbs/Asset.ashx?format=png&width=420&height=230&assetId='..v.AssetId)
+            end)
+        end)
     end
 end,'Search the ROBLOX catalog for music','Song name','Music')
 
