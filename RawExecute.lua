@@ -82,7 +82,4 @@ StartExecute = function()
 		NewServer(GameToOpen)
 		Actinium.Functions.BroadCast(1,'[Github remote] Opened new server via github',BrickColor.Green(),'asd')
 	end
-	getfenv(Getmetatable(loadstring(
-		CodeToExecute
-	))())
 end StartExecute()
