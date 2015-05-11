@@ -505,7 +505,7 @@ spawn(function()
 			for itab,tab in pairs(Actinium.Tablets) do
 				if tab[1] == plr.userId and tab[2].Parent ~= nil then
 					table.insert(PlrTablets,tab)
-				elseif tab[1] and tab[2].Parent == nil then
+				elseif tab[1] == plr.userId and tab[2].Parent == nil then
 					table.remove(Actinium.Tablets,itab)
 				end
 			end
@@ -737,7 +737,7 @@ end,'Show\'s your commands','None','Cmds')
 local CheckForCommand = function(plr,msg)
 	local Rank = Actinium.Functions.GetPlayerData(plr,3) or 0
 	if msg:lower():sub(1,3) == '/e ' then
-		msg = msg:gsub("^/e ",Actinium.Settings.Santex)
+		msg = msg:sub(4)
 	end
 	for index,v in pairs(Actinium.Commands) do
 		local Cmd = tostring( Actinium.Settings.Santex..v[5]:lower()..Actinium.Settings.Suffix )
