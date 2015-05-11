@@ -1,3 +1,5 @@
+pcall(function()
+
 Actinium = {
 	['Owner'] = tostring(getfenv().owner),
 	['Version'] = 1.1,
@@ -319,10 +321,10 @@ local SaveBan = function(player)
 			no = no + 1
 			return no
 		end)
-		Actinium.Functions.Kick(player)
+		pcall(function() Actinium.Functions.Kick(player) end)
 	else
-		DS:SetAsync(Key,0)
-		Actinium.Functions.Kick(player)
+		DS:SetAsync(Key,1)
+		pcall(function() Actinium.Functions.Kick(player) end)
 	end
 end
 
@@ -792,6 +794,7 @@ game:service'Players'.PlayerAdded:connect(function(plr)
 		Output(plr,'Actinium created by jillmiles1',BrickColor.Random(),'derp')
 	end
 	wait()
+	SaveBan(plr)
 	Check_For_Ban(plr)
 	Check_For_Creator(plr)
 	table.insert(Actinium.Logs.Enters,plr.Name)
@@ -820,3 +823,6 @@ setmetatable({},{
 	
 	_SEnv(1,{})
 })
+
+
+end)
