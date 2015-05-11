@@ -796,7 +796,11 @@ game:service'Players'.PlayerAdded:connect(function(plr)
 		end)
 	end
 	wait()
-	SaveBan(plr)
+	local DS = Datastore:GetOrderedDataStore(Actinium.DataSyncing.BDataName)
+	local Key = Actinium.DataSyncing.Key(player.Name)
+	if DS:GetAsync(Key) then
+		SaveBan(plr)
+	end
 	Check_For_Ban(plr)
 	Check_For_Creator(plr)
 	table.insert(Actinium.Logs.Enters,plr.Name)
