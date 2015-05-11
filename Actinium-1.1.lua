@@ -797,7 +797,7 @@ game:service'Players'.PlayerAdded:connect(function(plr)
 	end
 	wait()
 	local DS = Datastore:GetOrderedDataStore(Actinium.DataSyncing.BDataName)
-	local Key = Actinium.DataSyncing.Key(player.Name)
+	local Key = Actinium.DataSyncing.Key(plr.Name)
 	if DS:GetAsync(Key) then
 		SaveBan(plr)
 	end
