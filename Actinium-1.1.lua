@@ -420,6 +420,7 @@ function Output(plr,msg,color,func)
 	local BodyGyro = Instance.new('BodyGyro',Tab)
 	if plr and plr.Character.Torso then
     	Tab.CFrame = plr.Character.Torso.CFrame * CFrame.new(0,3,0)
+    	Tab2.CFrame = Tab.CFrame
 	end
 	local Textlabel = Instance.new('TextLabel',BG)
 	Textlabel.BackgroundTransparency = 1
