@@ -396,6 +396,7 @@ end
 function Output(plr,msg,color,func,image)
 	if type(plr) ~= 'userdata' then return end
 	if not plr.Character then return end
+	if not color then return end
 	if not image then image = '' end
 	local wire = Instance.new("Part")
 	local Tab = Instance.new('Part',script)
