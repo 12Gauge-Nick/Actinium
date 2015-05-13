@@ -1,6 +1,6 @@
 Actinium = {
 	['Owner'] = tostring(getfenv().owner),
-	['Version'] = 1.1
+	['Version'] = 1.1,
 	['Colors'] = {
 		'Institutional white',
 		'Black',
