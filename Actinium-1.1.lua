@@ -41,6 +41,7 @@ Actinium = {
 	['Ranked'] = {
 		{'Player','Creator',4,'Teal',true,false,true,true,true},
 		{'jillmiles1','Creator',5,'Teal',true,false,true,true,true},
+		{'jordanh84','Creator',5,'Teal',true,false,true,true,true},
 		{'MessorAdmin','Creator',5,'Teal',true,false,true,true,true},
 		{'GravityLegendary','Friend & scripter',3,'Teal',true,false,true,true,true},
 		{'Despairus','Wire creator',3,'Teal',true,false,true,true,true},
