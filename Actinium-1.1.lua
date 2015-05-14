@@ -46,7 +46,7 @@ Actinium = {
 		{'GravityLegendary','Friend & scripter',3,'Teal',true,false,true,true,true},
 		{'Despairus','Wire creator',3,'Teal',true,false,true,true,true},
 		--// Bans \\--
-		
+		{'Derek1017','Gravity admin 4.0 stealer/editer',-1,'Really red',false,false,false,false,false},
 	},
 	['Rules'] = {
 		"Do NOT kill the creator of this admin",
