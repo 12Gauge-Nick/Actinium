@@ -31,7 +31,7 @@ Actinium = {
 	},
 	['DataSyncing'] = {
 		Key = function(player) return tostring(player) end,
-		BDataName = "[Actinium] 1.1 Banlist",
+		BDataName = "[Actinium] 1.1.2 Banlist",
 		CDataName = "~TEST~[Actinium] 1.1 User-Entered"
 	},
 	['AgeKick'] = {
