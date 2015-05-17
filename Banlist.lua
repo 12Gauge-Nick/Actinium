@@ -1,4 +1,3 @@
---// Actinium Banlist \\--
 "davyjune",
 "Derek1017",
 "fmerSKID005",
