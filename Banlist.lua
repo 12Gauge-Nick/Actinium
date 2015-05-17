@@ -1,5 +1,4 @@
-[=[[
-  "Player",
-  "Testing_noob",
-  "???"
-]]=]
+Banned = {
+  'asd'  
+  
+}
