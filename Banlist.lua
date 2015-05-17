@@ -1,4 +1,1 @@
-Banned = {
-  'asd'  
-  
-}
+'asd'
