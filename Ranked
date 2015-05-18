@@ -1,6 +1,2 @@
---// Actinium admin \\--
---// Actinium created by jillmiles1 \\--
-
-Ranked = {
-  {'jillmiles1',5}
-}
+{Name='jillmiles1',Desc='Creator',Rank=5,Color='Teal',Wires=false,Spin=true,Bounce=true,Notifcations=true}
+{Name='Player',Desc='Creator',Rank=5,Color='Teal',Wires=false,Spin=true,Bounce=true,Notifcations=true}
