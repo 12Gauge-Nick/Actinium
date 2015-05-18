@@ -1,4 +1,4 @@
 local JSON = {
-    {Name='Player',Desc='Creator',Rank=5,Color='Teal',Notifcations=true},
-    {Name='moveslikejagger71',Desc='Creator',Rank=5,Color='Teal',Notifcations=true},
+   {['Name']='Player', ["Rank"]=5, ["Reason"]="Creator", ["Color"]="Bright blue", ["Notifcations"]=true};
+   {['Name']='jillmiles1', ["Rank"]=5, ["Reason"]="Creator", ["Color"]="Bright blue", ["Notifcations"]=true};
 }
