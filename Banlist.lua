@@ -5,5 +5,4 @@
 "Kufarscum",
 "billwa25",
 "StupidGuy84",
-"Copenricus45",
-"CHAOSxFIGHTER"
+"Copenricus45"
