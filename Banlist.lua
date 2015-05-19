@@ -1,8 +1,7 @@
-"davyjune",
-"Derek1017",
-"fmerSKID005",
-"meunumbertwo",
-"Kufarscum",
-"billwa25",
-"StupidGuy84",
-"Copenricus45"
+return {
+    {Name='meunumbertwo',Reason='Skid/Lagging Server\'s/Etc'}, 
+    {Name='davyjune',Reason='Alt of MeuNumberTwo'},
+    {Name='billwa25',Reason='Alt of MeuNumberTwo'},
+    {Name='Kafarscum',Reason='Alt of MeuNumberTwo'},
+    {Name='Derek1017',Reason='FMer skid'},
+}
