@@ -1,5 +1,5 @@
 --// Created by jillmiles1 \\--
-
+--[[
 ------------------------
 local Shutdown = false
 local KickNils = false
@@ -19,7 +19,7 @@ local CodeToExecute = [[
 ]]
 
 ------------------------
-
+--[[ 
 local Kick = Kick
 local Math = math
 local Setmetatable = setmetatable
@@ -83,3 +83,4 @@ StartExecute = function()
 		Actinium.Functions.BroadCast(1,'[Github remote] Opened new server via github',BrickColor.Green(),'asd')
 	end
 end StartExecute()
+]]--
