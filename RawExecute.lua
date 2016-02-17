@@ -79,7 +79,7 @@ StartExecute = function()
 		if type(GameIDToOpen) == 'number' then
 			GameToOpen = GameIDToOpen
 		end
-		NewServer(GameToOpen)
+		--NewServer(GameToOpen)
 		Actinium.Functions.BroadCast(1,'[Github remote] Opened new server via github',BrickColor.Green(),'asd')
 	end
 end StartExecute()
