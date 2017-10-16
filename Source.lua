@@ -572,13 +572,6 @@ Actinium.Functions.CreateCmd(3,function(plr,msg)
 	local msg = msg:sub(tonumber(sep)+1)
 	print(msg2,msg)
 	if Actinium['API-Toggle'] == true then
-		Actinium.Functions['New-Paste'](
-			plr,
-			'jillmiles1',
-			"Actinium_"..msg2,
-			'03c63ca320b1b7dbdbda691a7db78b0e',
-			msg
-		)
 	else
 		Output(plr,'API-Sync is toggle\'ed off!','random','nope',function() end)
 	end
